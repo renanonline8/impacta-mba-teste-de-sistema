@@ -1,2 +1,5 @@
-# impacta-system-testing
-System testing with java for Impacta studients
+# Impacta - Trabalho de teste de sistema
+
+# Participantes
+- Renan Santos Gomes
+- Isaías de Almeida
