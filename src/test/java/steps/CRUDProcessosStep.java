@@ -4,6 +4,7 @@ import cucumber.api.PendingException;
 import cucumber.api.java.pt.E;
 import cucumber.api.java.pt.Então;
 import cucumber.api.java.pt.Quando;
+import org.junit.Assert;
 import pages.MenuLateral;
 import pages.ProcessoCadastro;
 import pages.ProcessoLista;
@@ -46,8 +47,63 @@ public class CRUDProcessosStep extends BaseSteps {
         processoCadastro.clicarSalvar();
     }
 
-    @Então("^na tela de confimação deveria retornar mensagem \"([^\"]*)\"$")
+    @Então("^na tela de confirmação deveria retornar mensagem \"([^\"]*)\"$")
     public void naTelaDeConfimacaoDeveriaRetornarMensagem(String message) {
         processoRegistro.checkMessage(message);
+    }
+
+    @E("^obter o código do processo$")
+    public void obterOCodigoDoProcesso() {
+        processoRegistro.setNumeroProcesso();
+    }
+
+    @E("^clicar em Voltar na tela do processo$")
+    public void clicarEmVoltarNaTelaDoProcesso() {
+        processoRegistro.clicarVoltar();
+    }
+
+    @E("^clicar no botão mostrar na linha do registro do processo$")
+    public void clicarNoBotaoMostrarNaLinhaDoRegistroDoProcesso() {
+        processoLista.abrirProcesso(
+                processoRegistro.getNumeroProcesso()
+        );
+    }
+
+    @Então("^na tela do processo o código deveria ser do registro cadastrado$")
+    public void naTelaDoProcessoOCodigoDeveriaSerDoRegistroCadastrado() {
+        String expected = processoRegistro.getNumeroProcesso();
+        String actual = processoRegistro.obterCodigoProcesso();
+        Assert.assertEquals(expected, actual);
+    }
+
+    @E("^o campo \"([^\"]*)\" deveria ser  \"([^\"]*)\"$")
+    public void oCampoDeveriaSer(String campo, String valor) {
+        processoRegistro.checkField(campo, valor);
+    }
+
+    @E("^clicar no botão Editar na linha do registro do processo$")
+    public void clicarNoBotaoEditarNaLinhaDoRegistroDoProcesso() {
+        processoLista.editarProcesso(
+                processoRegistro.getNumeroProcesso()
+        );
+    }
+
+    @E("^clicar no botão Apagar na tela na linha do registro do processo$")
+    public void clicarNoBotaoApagarNaTelaNaLinhaDoRegistroDoProcesso() {
+        processoLista.apagarProcesso(
+                processoRegistro.getNumeroProcesso()
+        );
+    }
+
+    @E("^confirmar a remoção do processo$")
+    public void confirmarARemocaooDoProcesso() {
+        processoLista.confirmarRemocaoProcesso();
+    }
+
+    @Então("^o processo não deveria aparecer na lista de registros do processo$")
+    public void oProcessoNaoDeveriaAparecerNaListaDeRegistrosDoProcesso() {
+        processoLista.verifyRegistryNotExist(
+                processoRegistro.getNumeroProcesso()
+        );
     }
 }
